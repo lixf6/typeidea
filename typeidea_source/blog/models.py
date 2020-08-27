@@ -20,6 +20,9 @@ class Category(models.Model):
     class Meta:
         verbose_name = verbose_name_plural = '分类'
 
+    def __str__(self):
+        return self.name
+
 # Create Tag
 class Tag(models.Model):
     STATUS_NORMAL = 1
@@ -37,6 +40,9 @@ class Tag(models.Model):
 
     class Meta:
         verbose_name = verbose_name_plural = '标签'
+
+    def __str__(self):
+        return self.name
 
 # Create Post
 class Post(models.Model):
