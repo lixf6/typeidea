@@ -5,6 +5,7 @@ from django.utils.html import format_html
 from typeidea.typeidea_source.custom_site import custom_site
 from .adminforms import PostAdminForm
 from .models import Post, Category, Tag
+from typeidea.typeidea_source.base_admin import BaseOwnerAdmin
 
 class PostInline(admin.TabularInline):  # StackedInline样式不同
     fields = ('title', 'desc')
@@ -13,7 +14,7 @@ class PostInline(admin.TabularInline):  # StackedInline样式不同
 
 # Register your models here.
 @admin.register(Category, site=custom_site)
-class CategoryAdmin(admin.ModelAdmin):
+class CategoryAdmin(BaseOwnerAdmin):
     inlines = [PostInline, ]
     list_display = ('name', 'status', 'is_nav', 'created_time', 'post_count')
     fields = ('name', 'status', 'is_nav', 'owner')
@@ -27,7 +28,7 @@ class CategoryAdmin(admin.ModelAdmin):
         return super(CategoryAdmin, self).save_model(request, obj, form, change)
 
 @admin.register(Tag, site=custom_site)
-class TagAdmin(admin.ModelAdmin):
+class TagAdmin(BaseOwnerAdmin):
     list_display = ('name', 'status', 'created_time')
     fields = ('name', 'status')
 
@@ -50,7 +51,7 @@ class CategoryOwnerFilter(admin.SimpleListFilter):
         return queryset
 
 @admin.register(Post, site=custom_site)
-class PostAdmin(admin.ModelAdmin):
+class PostAdmin(BaseOwnerAdmin):
     form = PostAdminForm
     list_display = [
         'title', 'category', 'status',
